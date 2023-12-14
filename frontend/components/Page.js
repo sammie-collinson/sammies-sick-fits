@@ -23,7 +23,7 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 10px;
     line-height: 2;
   }
 
@@ -45,8 +45,13 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    padding: 0;
+    margin: 0;
+    font-size: 1.5rem;
     font-family: 'radnika_next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+
   }
+  
 `;
 
 const InnerStyles = styled.div`
@@ -65,8 +70,5 @@ export default function Page({ children }) {
 }
 
 Page.propTypes = {
-    children: PropTypes.oneOf([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]),
+    children: PropTypes.any,
 };
