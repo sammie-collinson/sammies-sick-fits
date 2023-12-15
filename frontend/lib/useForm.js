@@ -1,8 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function useForm(initial = {}) {
     // create a state object for our inputs
     const [inputs, setInputs] = useState(initial);
+
+    // by coercing initial to an Object and then to a string, we avoid triggering an infinite loop in useEffect.
+    const initialValues = Object.values(initial).join('');
+
+    useEffect(() => {
+        setInputs(initial);
+    }, [initialValues]);
 
     function handleChange(e) {
         let { value, name, type } = e.target;
