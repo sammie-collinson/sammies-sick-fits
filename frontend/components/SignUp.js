@@ -3,55 +3,62 @@ import { useMutation } from '@apollo/client';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
 import useForm from '../lib/useForm';
-import { CURRENT_USER_QUERY } from './User';
 
-const SIGNIN_MUTATION = gql`
-    mutation SIGN_IN_MUTATION($email: String!, $password: String!) {
-        authenticateUserWithPassword(email: $email, password: $password) {
-            ... on UserAuthenticationWithPasswordSuccess {
-                item {
-                    email
-                    name
-                    password_is_set
-                }
-            }
-            ... on UserAuthenticationWithPasswordFailure {
-                code
-                message
-            }
+const SIGNUP_MUTATION = gql`
+    mutation SIGNUP_MUTATION(
+        $name: String!
+        $email: String!
+        $password: String!
+    ) {
+        createUser(data: { name: $name, email: $email, password: $password }) {
+            id
+            name
+            email
         }
     }
 `;
 
-export default function SignIn() {
+export default function SignUp() {
     const { inputs, handleChange, resetForm } = useForm({
         email: '',
+        name: '',
         password: '',
     });
 
-    const [signin, { data }] = useMutation(SIGNIN_MUTATION, {
+    const [signup, { data, error, loading }] = useMutation(SIGNUP_MUTATION, {
         variables: inputs,
-        // refetch the currently logged in user
-        refetchQueries: [{ query: CURRENT_USER_QUERY }],
     });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // send email and password to gql api
-        await signin();
+        // send email, password, and name to gql api
+        await signup();
         resetForm();
     };
 
-    const error =
-        data?.authenticateUserWithPassword.__typename ===
-        'UserAuthenticationWithPasswordFailure'
-            ? data?.authenticateUserWithPassword
-            : undefined;
     return (
         <Form onSubmit={handleSubmit} method="POST">
             <Error error={error} />
-            <h2>Sign Into Your Account</h2>
-            <fieldset disabled={false} aria-busy="false">
+            <h2>Sign Up for an Account</h2>
+            <fieldset disabled={loading} aria-busy={loading}>
+                {data?.createUser && (
+                    <p>
+                        Signed up with {data.createUser.email}. Please go ahead
+                        and sign in.
+                    </p>
+                )}
+                <label htmlFor="name">
+                    Your Name
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Your name"
+                        autoComplete="name"
+                        value={inputs.name}
+                        onChange={handleChange}
+                    />
+                </label>
                 <label htmlFor="email">
                     Email
                     <input
