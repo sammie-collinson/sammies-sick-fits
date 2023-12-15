@@ -4,7 +4,7 @@ import Router from 'next/router';
 import DisplayError from './ErrorMessage';
 import useForm from '../lib/useForm';
 import Form from './styles/Form';
-import { ALL_PRODUCTS_QUERY } from '../pages/products';
+import { ALL_PRODUCTS_QUERY } from './Products';
 
 // TODO: side project, implement Formik
 

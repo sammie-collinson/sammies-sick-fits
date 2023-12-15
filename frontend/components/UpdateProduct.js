@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useMutation, useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
-import Router from 'next//router';
 import Form from './styles/Form';
 import DisplayError from './ErrorMessage';
 import useForm from '../lib/useForm';
