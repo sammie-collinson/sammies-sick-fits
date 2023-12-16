@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 import { useFormik } from 'formik';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
+import { FormEvent } from 'react';
 
 // note: I did not feel like signing up for a transactional email handler,
 // so this component will not be used in prod. 
@@ -21,15 +22,15 @@ export default function RequestPasswordReset() {
     const [signup, { data, error, loading }] = useMutation(
         REQUEST_RESET_MUTATION,
         {
-            variables: inputs,
+            variables: formik.values,
         }
     );
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // send email, password, and name to gql api
         await signup();
-        resetForm();
+        formik.resetForm();
     };
 
     return (

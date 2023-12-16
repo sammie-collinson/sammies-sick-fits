@@ -3,44 +3,39 @@ import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
-import useForm from '../lib/useForm';
+import { useFormik } from 'formik';
+import { FormEvent } from 'react';
 
-const RESET_MUTATION = gql`
-    mutation RESET_MUTATION(
-        $email: String!
-        $password: String!
-        $token: String!
-    ) {
-        redeemUserPasswordResetToken(
-            email: $email
-            password: $password
-            token: $token
-        ) {
-            code
-            message
-        }
-    }
-`;
+// TODO: remove this component since I don't want to use it in prod
 
-export default function Reset({ token }) {
-    const { inputs, handleChange, resetForm } = useForm({
-        email: '',
-        password: '',
-        token,
+
+interface ResetProps {
+    token: string;
+}
+
+export default function Reset({ token }: ResetProps) {
+
+    const formik = useFormik<{email: string, password: string, token: string}>({
+        initialValues: {
+            email: '',
+            password: '',
+            token,
+        },
+        onSubmit: values => console.log(values)
     });
 
     const [reset, { data, loading, error }] = useMutation(RESET_MUTATION, {
-        variables: inputs,
+        variables: formik.values,
     });
     const tokenError = data?.redeemUserPasswordResetToken?.code
         ? data?.redeemUserPasswordResetToken
         : undefined;
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // send email, password, and name to gql api
         await reset().catch(console.error);
-        resetForm();
+        formik.resetForm();
     };
 
     return (
@@ -60,8 +55,8 @@ export default function Reset({ token }) {
                         name="email"
                         placeholder="Your email address"
                         autoComplete="email"
-                        value={inputs.email}
-                        onChange={handleChange}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
                     />
                 </label>
                 <label htmlFor="password">
@@ -71,8 +66,8 @@ export default function Reset({ token }) {
                         id="password"
                         name="password"
                         placeholder="Password"
-                        value={inputs.password}
-                        onChange={handleChange}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
                     />
                 </label>
 
@@ -81,3 +76,21 @@ export default function Reset({ token }) {
         </Form>
     );
 }
+
+const RESET_MUTATION = gql`
+    mutation RESET_MUTATION(
+        $email: String!
+        $password: String!
+        $token: String!
+    ) {
+        redeemUserPasswordResetToken(
+            email: $email
+            password: $password
+            token: $token
+        ) {
+            code
+            message
+        }
+    }
+`;
+
