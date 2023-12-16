@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import Head from 'next/head';
@@ -37,7 +36,11 @@ const SINGLE_ITEM_QUERY = gql`
     }
 `;
 
-export default function SingleProduct({ id }) {
+interface SingleProductProps {
+    id: string;
+}
+
+export default function SingleProduct({ id }: SingleProductProps) {
     const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY, {
         variables: {
             id,

@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import Head from 'next/head';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
@@ -15,7 +14,11 @@ export const PAGINATION_QUERY = gql`
     }
 `;
 
-export default function Pagination({ page }) {
+interface PaginationProps {
+    page: number;
+}
+
+export default function Pagination({ page }: PaginationProps) {
     const { error, loading, data } = useQuery(PAGINATION_QUERY);
 
     if (loading) return <p>Loading....</p>;

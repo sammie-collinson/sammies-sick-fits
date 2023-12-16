@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
 import Form from './styles/Form';

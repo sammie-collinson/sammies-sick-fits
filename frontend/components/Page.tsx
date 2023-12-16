@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
 import styled, { createGlobalStyle } from 'styled-components';
 import Header from './Header';
+import { ReactChildren } from 'react';
 
 const GlobalStyles = createGlobalStyle`
 @font-face {
@@ -59,7 +59,11 @@ const InnerStyles = styled.div`
     margin: 0 auto;
     padding: 2rem;
 `;
-export default function Page({ children }) {
+
+interface PageProps {
+  children: ReactChildren;
+}
+export default function Page({ children }: PageProps) {
     return (
         <div>
             <GlobalStyles />
@@ -69,6 +73,3 @@ export default function Page({ children }) {
     );
 }
 
-Page.propTypes = {
-    children: PropTypes.any,
-};
