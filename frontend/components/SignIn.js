@@ -56,7 +56,7 @@ export default function SignIn() {
                     Email
                     <input
                         type="text"
-                        id="email"
+                        id="signInEmail"
                         name="email"
                         placeholder="Your email address"
                         autoComplete="email"
@@ -68,7 +68,7 @@ export default function SignIn() {
                     Password
                     <input
                         type="password"
-                        id="password"
+                        id="signInPassword"
                         name="password"
                         placeholder="Password"
                         value={inputs.password}

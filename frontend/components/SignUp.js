@@ -63,7 +63,7 @@ export default function SignUp() {
                     Email
                     <input
                         type="text"
-                        id="email"
+                        id="signUpEmail"
                         name="email"
                         placeholder="Your email address"
                         autoComplete="email"
@@ -75,7 +75,7 @@ export default function SignUp() {
                     Password
                     <input
                         type="password"
-                        id="password"
+                        id="signUpPassword"
                         name="password"
                         placeholder="Password"
                         value={inputs.password}
