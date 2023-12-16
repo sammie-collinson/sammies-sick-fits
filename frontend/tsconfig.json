@@ -1,17 +1,10 @@
 {
-  "include": [
-    "./**/*"
-  ],
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "node",
     "strict": true,
-    "lib": [
-      "ESNext",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
     "jsx": "preserve",
     "allowJs": true,
@@ -22,7 +15,5 @@
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

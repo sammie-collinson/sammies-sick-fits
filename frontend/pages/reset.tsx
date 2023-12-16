@@ -1,8 +1,13 @@
-/* eslint-disable react/prop-types */
 import RequestPasswordReset from '../components/RequestReset';
 import Reset from '../components/Reset';
 
-export default function ResetPage({ query }) {
+// note: will not be using in prod.
+
+interface ResetPageProps {
+    query: Record<string, any>;
+}
+
+export default function ResetPage({ query }: ResetPageProps) {
     if (!query?.token)
         return (
             <div>

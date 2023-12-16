@@ -1,7 +1,11 @@
-/* eslint-disable react/prop-types */
 import UpdateProduct from '../components/UpdateProduct';
 
-export default function UpdatePage({ query }) {
+interface UpdatePageProps {
+    query: Record<string, any>
+}
+
+export default function UpdatePage({ query }: UpdatePageProps) {
+    
     return (
         <div>
             <UpdateProduct id={query.id} />
