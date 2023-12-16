@@ -1,24 +1,22 @@
-/* eslint-disable react/prop-types */
 
-import { useMutation } from '@apollo/client';
+import {  useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
+import { ReactChildren } from 'react';
 
-const DELETE_PRODUCT_MUTATION = gql`
-    mutation DELETE_PRODUCT_MUTATION($id: ID!) {
-        deleteProduct(id: $id) {
-            id
-            name
-        }
-    }
-`;
-
-function update(cache, payload) {
-    // apollo has a nice evict api, which will remove the item from the payload from the cache
-    // so that the UI updates instantly once the product is deleted.
-    cache.evict(cache.identify(payload.data.deleteProduct));
+interface DeleteProductProps {
+    id: string;
+    children: ReactChildren;
 }
 
-export default function DeleteProduct({ id, children }) {
+
+// TS note - need to research how to narrow the types of these arguments for the update function.
+function update(cache: any, payload: any) {
+    // apollo has a nice evict api, which will remove the item from the payload from the cache
+    // so that the UI updates instantly once the product is deleted.
+    cache.evict({id: cache.identify(payload.data.deleteProduct)});
+}
+
+export default function DeleteProduct({ id, children }: DeleteProductProps) {
     const [deleteProduct, { loading, error }] = useMutation(
         DELETE_PRODUCT_MUTATION,
         {
@@ -37,7 +35,7 @@ export default function DeleteProduct({ id, children }) {
             onClick={async () => {
                 // eslint-disable-next-line no-restricted-globals
                 if (confirm('Are you sure you want to delete this item?')) {
-                    console.log('deleting');
+                    
                     await deleteProduct().catch((err) => alert(err.message));
                 }
             }}
@@ -46,3 +44,13 @@ export default function DeleteProduct({ id, children }) {
         </button>
     );
 }
+
+
+const DELETE_PRODUCT_MUTATION = gql`
+    mutation DELETE_PRODUCT_MUTATION($id: ID!) {
+        deleteProduct(id: $id) {
+            id
+            name
+        }
+    }
+`;

@@ -7,7 +7,7 @@ const DropDown = styled.div`
   border: 1px solid var(--lightGray);
 `;
 
-const DropDownItem = styled.div`
+const DropDownItem = styled.div<{highlighted: boolean}>`
   border-bottom: 1px solid var(--lightGray);
   background: ${(props) => (props.highlighted ? '#f7f7f7' : 'white')};
   padding: 1rem;
