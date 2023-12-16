@@ -24,6 +24,7 @@
     "babel-plugin-styled-components": "^2.1.4",
     "date-fns": "^2.16.1",
     "downshift": "^6.0.6",
+    "formik": "^2.4.5",
     "graphql": "16.0.1",
     "graphql-tag": "^2.11.0",
     "graphql-upload": "^11.0.0",

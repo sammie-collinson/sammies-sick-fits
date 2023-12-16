@@ -1,9 +1,10 @@
-import CreateProduct from '../components/CreateProduct';
+
+import CreateProductFormik from '../components/CreateProductFormik';
 
 export default function SellPage() {
     return (
         <div>
-            <CreateProduct />
+            <CreateProductFormik />
         </div>
     );
 }

@@ -1,21 +1,21 @@
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
+import { useFormik } from 'formik';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
-import useForm from '../lib/useForm';
 
-const REQUEST_RESET_MUTATION = gql`
-    mutation REQUEST_RESET_MUTATION($email: String!) {
-        sendUserPasswordResetLink(email: $email) {
-            code
-            message
-        }
-    }
-`;
+// note: I did not feel like signing up for a transactional email handler,
+// so this component will not be used in prod. 
 
 export default function RequestPasswordReset() {
-    const { inputs, handleChange, resetForm } = useForm({
-        email: '',
+
+    const formik = useFormik<{email: string}>({
+        initialValues: {
+            email: ''
+
+        },
+        onSubmit: values => console.log(values),
+        
     });
 
     const [signup, { data, error, loading }] = useMutation(
@@ -49,8 +49,8 @@ export default function RequestPasswordReset() {
                         name="email"
                         placeholder="Your email address"
                         autoComplete="email"
-                        value={inputs.email}
-                        onChange={handleChange}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
                     />
                 </label>
 
@@ -59,3 +59,12 @@ export default function RequestPasswordReset() {
         </Form>
     );
 }
+
+const REQUEST_RESET_MUTATION = gql`
+    mutation REQUEST_RESET_MUTATION($email: String!) {
+        sendUserPasswordResetLink(email: $email) {
+            code
+            message
+        }
+    }
+`;

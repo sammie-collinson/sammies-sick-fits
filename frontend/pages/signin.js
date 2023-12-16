@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import SignIn from '../components/SignIn';
-import SignUp from '../components/SignUp';
 import RequestPasswordReset from '../components/RequestReset';
+import SignUpFormik from '../components/SignUpFormik';
+import SignInFormik from '../components/SignInFormik';
 
 const GridStyles = styled.div`
     display: grid;
@@ -12,8 +12,8 @@ const GridStyles = styled.div`
 export default function SignInPage() {
     return (
         <GridStyles>
-            <SignIn />
-            <SignUp />
+            <SignInFormik />
+            <SignUpFormik />
             {/* <RequestPasswordReset /> */}
         </GridStyles>
     );

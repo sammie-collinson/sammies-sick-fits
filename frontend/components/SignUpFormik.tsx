@@ -1,43 +1,34 @@
-import gql from 'graphql-tag';
-import { useMutation } from '@apollo/client';
-import Form from './styles/Form';
-import Error from './ErrorMessage';
-import useForm from '../lib/useForm';
+import React, { FormEvent } from "react";
+import { useFormik } from "formik";
+import gql from "graphql-tag";
+import Form from "./styles/Form";
+import Error from './ErrorMessage'
+import { useMutation } from "@apollo/client";
 
-const SIGNUP_MUTATION = gql`
-    mutation SIGNUP_MUTATION(
-        $name: String!
-        $email: String!
-        $password: String!
-    ) {
-        createUser(data: { name: $name, email: $email, password: $password }) {
-            id
-            name
-            email
-        }
-    }
-`;
 
-export default function SignUp() {
-    const { inputs, handleChange, resetForm } = useForm({
-        email: '',
-        name: '',
-        password: '',
+
+const SignUpFormik = () => {
+    const formik = useFormik<{email: string; name: string; password: string;}>({
+        initialValues: {
+            email: '',
+            name: '',
+            password: '',
+        },
+        onSubmit: values => console.log(values)
     });
-
     const [signup, { data, error, loading }] = useMutation(SIGNUP_MUTATION, {
-        variables: inputs,
+        variables: formik.values,
     });
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         // send email, password, and name to gql api
         await signup();
-        resetForm();
+        formik.resetForm();
     };
 
-    return (
-        <Form onSubmit={handleSubmit} method="POST">
+      return (
+        <Form onSubmit={(e) => handleSubmit(e)} method="POST">
             <Error error={error} />
             <h2>Sign Up for an Account</h2>
             <fieldset disabled={loading} aria-busy={loading}>
@@ -55,8 +46,8 @@ export default function SignUp() {
                         name="name"
                         placeholder="Your name"
                         autoComplete="name"
-                        value={inputs.name}
-                        onChange={handleChange}
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
                     />
                 </label>
                 <label htmlFor="email">
@@ -67,8 +58,8 @@ export default function SignUp() {
                         name="email"
                         placeholder="Your email address"
                         autoComplete="email"
-                        value={inputs.email}
-                        onChange={handleChange}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
                     />
                 </label>
                 <label htmlFor="password">
@@ -78,13 +69,30 @@ export default function SignUp() {
                         id="signUpPassword"
                         name="password"
                         placeholder="Password"
-                        value={inputs.password}
-                        onChange={handleChange}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
                     />
                 </label>
 
                 <button type="submit">Sign In</button>
             </fieldset>
         </Form>
-    );
+
+      )
 }
+
+const SIGNUP_MUTATION = gql`
+    mutation SIGNUP_MUTATION(
+        $name: String!
+        $email: String!
+        $password: String!
+    ) {
+        createUser(data: { name: $name, email: $email, password: $password }) {
+            id
+            name
+            email
+        }
+    }
+`;
+
+export default SignUpFormik;
