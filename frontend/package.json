@@ -72,17 +72,9 @@
     "typescript": "^5.3.3"
   },
   "eslintConfig": {
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "singleQuote": true,
-          "endOfLine": "auto",
-          "tabWidth": 4
-        }
-      ],
-      "no-console": 2
-    }
+    "extends": [
+      "./.eslintrc"
+    ]
   },
   "jest": {
     "setupFilesAfterEnv": [

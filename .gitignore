@@ -9,3 +9,7 @@ variables.env
 *.env
 .keystone
 *.db
+.eslintignore
+.eslintrc
+.npmrc
+.prettierrc

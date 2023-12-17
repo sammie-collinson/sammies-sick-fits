@@ -8,7 +8,6 @@ export default function paginationField() {
             const { skip, first } = args;
             // first, ask the read fn for those items.
             const data = cache.readQuery({ query: PAGINATION_QUERY });
-            console.log(data);
             const count = data?._allProductsMeta?.count;
             const page = skip / first + 1;
             const pages = Math.ceil(count / first);
@@ -36,9 +35,6 @@ export default function paginationField() {
             // need to go to the network.
 
             if (items.length) {
-                console.log(
-                    `There are ${items.length} items in the cache! Gonna send them to apollo.`
-                );
                 return items;
             }
             // we can do one of two things:
@@ -54,7 +50,6 @@ export default function paginationField() {
             for (let i = skip; i < skip + incoming.length; ++i) {
                 merged[i] = incoming[i - skip];
             }
-            console.log({ merged });
             // finally we return the merged items from the cache.
             // it goes back to the read method and invokes it again. (read => merge => read)
             return merged;

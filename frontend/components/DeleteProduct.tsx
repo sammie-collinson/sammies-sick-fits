@@ -1,10 +1,10 @@
-import { useMutation } from "@apollo/client";
-import gql from "graphql-tag";
-import { ReactChildren } from "react";
+import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
+import { ReactChild, ReactChildren } from 'react';
 
 interface DeleteProductProps {
   id: string;
-  children: ReactChildren;
+  children: ReactChild | ReactChildren;
 }
 
 // TS note - need to research how to narrow the types of these arguments for the update function.
@@ -19,10 +19,10 @@ export default function DeleteProduct({ id, children }: DeleteProductProps) {
     DELETE_PRODUCT_MUTATION,
     {
       variables: {
-        id,
+        id
       },
       // update runs when the mutation returns
-      update,
+      update
     }
   );
 
@@ -32,7 +32,7 @@ export default function DeleteProduct({ id, children }: DeleteProductProps) {
       disabled={loading}
       onClick={async () => {
         // eslint-disable-next-line no-restricted-globals
-        if (confirm("Are you sure you want to delete this item?")) {
+        if (confirm('Are you sure you want to delete this item?')) {
           await deleteProduct().catch((err) => alert(err.message));
         }
       }}
