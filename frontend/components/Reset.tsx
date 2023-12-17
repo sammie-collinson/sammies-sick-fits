@@ -3,7 +3,6 @@ import { useMutation } from '@apollo/client';
 import Form from './styles/Form';
 import Error from './ErrorMessage';
 import { useFormik } from 'formik';
-import { FormEvent } from 'react';
 
 // TODO: remove this component since I don't want to use it in prod
 
@@ -13,6 +12,7 @@ interface ResetProps {
 }
 
 export default function Reset({ token }: ResetProps) {
+    const [reset, { data, loading, error }] = useMutation(RESET_MUTATION)
 
     const formik = useFormik<{email: string, password: string, token: string}>({
         initialValues: {
@@ -20,25 +20,18 @@ export default function Reset({ token }: ResetProps) {
             password: '',
             token,
         },
-        onSubmit: values => console.log(values)
+        onSubmit: async (values) => {
+            await reset({variables: values}).catch(console.error);
+
+        }
     });
 
-    const [reset, { data, loading, error }] = useMutation(RESET_MUTATION, {
-        variables: formik.values,
-    });
     const tokenError = data?.redeemUserPasswordResetToken?.code
         ? data?.redeemUserPasswordResetToken
         : undefined;
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        // send email, password, and name to gql api
-        await reset().catch(console.error);
-        formik.resetForm();
-    };
-
     return (
-        <Form onSubmit={handleSubmit} method="POST">
+        <Form onSubmit={formik.handleSubmit} method="POST">
             <Error error={error || tokenError} />
             <h2>Reset Your Password</h2>
             <fieldset disabled={loading} aria-busy={loading}>

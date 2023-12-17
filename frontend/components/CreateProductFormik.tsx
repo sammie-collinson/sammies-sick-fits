@@ -2,13 +2,15 @@ import { useMutation } from "@apollo/client";
 import {  useFormik } from "formik";
 import gql from "graphql-tag";
 import Router from 'next/router';
-import React, { useCallback } from "react";
+import React from "react";
 import Form from './styles/Form';
 import DisplayError from "./ErrorMessage";
 import { ALL_PRODUCTS_QUERY } from "./Products";
 
 
 const CreateProductFormik = () => {
+    const [createProduct, { loading, error }] = useMutation(
+        CREATE_PRODUCT_MUTATION );
 
     const formik = useFormik<{image?: File, name: string, price: number, description: string}>({
         initialValues: {
@@ -18,34 +20,22 @@ const CreateProductFormik = () => {
             description: 'Input product description here'
 
         },
-        onSubmit: values => console.log(values),
+        onSubmit: async (values) => {
+            const res = await createProduct({
+                variables: values,
+                refetchQueries: [{query: ALL_PRODUCTS_QUERY}]
+            })
+              // Go to that product's page
+              Router.push({
+                pathname: `/product/${res.data.createProduct.id}`,
+            });
+        },
         
     });
     
-    const [createProduct, { data, loading, error }] = useMutation(
-        CREATE_PRODUCT_MUTATION,
-        {
-            variables: formik.values,
-            // refetchQueries allows the homepage/products page to update with the newly added products
-            // without requiring an actual browser refresh.
-            refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
-        }
-        );
         
     return (
-        <Form
-            onSubmit={async (e) => {
-                e.preventDefault();
-                // you can pass in the inputs in the mutation if you  know them ahead of time, or you can pass them in this
-                // invocation as well.
-                const res = await createProduct();
-                formik.resetForm();
-                // Go to that product's page
-                Router.push({
-                    pathname: `/product/${res.data.createProduct.id}`,
-                });
-            }}
-        >
+        <Form onSubmit={formik.handleSubmit}>
             <DisplayError error={error} />
             <fieldset disabled={loading} aria-busy={loading}>
                 <label htmlFor="image">
@@ -102,7 +92,6 @@ const CreateProductFormik = () => {
 
 const CREATE_PRODUCT_MUTATION = gql`
     mutation CREATE_PRODUCT_MUTATION(
-        # Which variables are getting passed in? What types are they?
         $name: String!
         $description: String!
         $price: Int!

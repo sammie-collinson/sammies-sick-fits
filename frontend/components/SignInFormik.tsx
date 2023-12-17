@@ -1,30 +1,23 @@
 import { gql, useMutation } from "@apollo/client";
 import { useFormik } from "formik";
-import React, { FormEvent } from "react";
+import React from "react";
 import Form from "./styles/Form";
 import Error from './ErrorMessage'
 import { CURRENT_USER_QUERY } from "./User";
 
 const SignInFormik = () => {
+    const [signin, { data }] = useMutation(SIGNIN_MUTATION);
+
     const formik = useFormik<{email: string, password: string}>({
         initialValues: {
             email: '',
             password: '',
         },
-        onSubmit: values => console.log(values)
-    });
-    const [signin, { data }] = useMutation(SIGNIN_MUTATION, {
-        variables: formik.values,
-        // refetch the currently logged in user
-        refetchQueries: [{ query: CURRENT_USER_QUERY }],
-    });
+        onSubmit: async (values) => {
+            await signin({variables: values, refetchQueries: [{query: CURRENT_USER_QUERY}]});
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        // send email, password, and name to gql api
-        await signin();
-        formik.resetForm();
-    };
+        }
+    });
 
     const error =
     data?.authenticateUserWithPassword.__typename ===
@@ -32,7 +25,7 @@ const SignInFormik = () => {
         ? data?.authenticateUserWithPassword
         : undefined;
 return (
-    <Form onSubmit={handleSubmit} method="POST">
+    <Form onSubmit={formik.handleSubmit} method="POST">
         <Error error={error} />
         <h2>Sign Into Your Account</h2>
         <fieldset disabled={false} aria-busy="false">

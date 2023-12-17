@@ -8,27 +8,21 @@ import { useMutation } from "@apollo/client";
 
 
 const SignUpFormik = () => {
+    const [signup, { data, error, loading }] = useMutation(SIGNUP_MUTATION);
+
     const formik = useFormik<{email: string; name: string; password: string;}>({
         initialValues: {
             email: '',
             name: '',
             password: '',
         },
-        onSubmit: values => console.log(values)
+        onSubmit: async (values) => {
+            await signup({variables: values});
+        }
     });
-    const [signup, { data, error, loading }] = useMutation(SIGNUP_MUTATION, {
-        variables: formik.values,
-    });
-
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        // send email, password, and name to gql api
-        await signup();
-        formik.resetForm();
-    };
 
       return (
-        <Form onSubmit={(e) => handleSubmit(e)} method="POST">
+        <Form onSubmit={formik.handleSubmit} method="POST">
             <Error error={error} />
             <h2>Sign Up for an Account</h2>
             <fieldset disabled={loading} aria-busy={loading}>
