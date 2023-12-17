@@ -1,6 +1,6 @@
-import styled, { createGlobalStyle } from 'styled-components';
-import Header from './Header';
-import { ReactChildren } from 'react';
+import styled, { createGlobalStyle } from "styled-components";
+import Header from "./Header";
+import { ReactChildren } from "react";
 
 const GlobalStyles = createGlobalStyle`
 @font-face {
@@ -55,21 +55,20 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const InnerStyles = styled.div`
-    max-width: var(--maxWidth);
-    margin: 0 auto;
-    padding: 2rem;
+  max-width: var(--maxWidth);
+  margin: 0 auto;
+  padding: 2rem;
 `;
 
 interface PageProps {
   children: ReactChildren;
 }
 export default function Page({ children }: PageProps) {
-    return (
-        <div>
-            <GlobalStyles />
-            <Header />
-            <InnerStyles>{children}</InnerStyles>
-        </div>
-    );
+  return (
+    <div>
+      <GlobalStyles />
+      <Header />
+      <InnerStyles>{children}</InnerStyles>
+    </div>
+  );
 }
-

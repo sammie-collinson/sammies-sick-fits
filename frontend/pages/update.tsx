@@ -1,14 +1,13 @@
-import UpdateProduct from '../components/UpdateProduct';
+import UpdateProduct from "../components/UpdateProduct";
 
 interface UpdatePageProps {
-    query: Record<string, any>
+  query: Record<string, any>;
 }
 
 export default function UpdatePage({ query }: UpdatePageProps) {
-    
-    return (
-        <div>
-            <UpdateProduct id={query.id} />
-        </div>
-    );
+  return (
+    <div>
+      <UpdateProduct id={query.id} />
+    </div>
+  );
 }

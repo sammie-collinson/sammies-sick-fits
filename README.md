@@ -17,4 +17,4 @@
 
 - editing products beyond page 1 in pagination yields errors rather than navigating to that product's update page.
 
-- linting/prettier config for typescript
+- add form validation
