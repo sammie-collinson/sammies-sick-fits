@@ -58,8 +58,12 @@ function CartStateProvider({ children }: Props) {
 
 function useCart() {
   // we use a consumer here to access the local state
-  const all = useContext(LocalStateContext);
-  return all;
+  const ctxValue = useContext(LocalStateContext);
+  if (ctxValue === null) {
+    throw new Error(`useCart must be used within a CartContextProvider`);
+  }
+
+  return ctxValue;
 }
 
 export { CartStateProvider, useCart };

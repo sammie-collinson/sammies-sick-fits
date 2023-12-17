@@ -1,4 +1,5 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery } from '@apollo/client';
+import { CartItem } from './Cart';
 
 export const CURRENT_USER_QUERY = gql`
   query CURRENT_USER_QUERY {
@@ -27,7 +28,14 @@ export const CURRENT_USER_QUERY = gql`
   }
 `;
 
-export function useUser() {
+interface AuthenticatedItem {
+  cart: CartItem[];
+  email: string;
+  id: string;
+  name: string;
+}
+
+export function useUser(): AuthenticatedItem | undefined {
   const { data } = useQuery(CURRENT_USER_QUERY);
   return data?.authenticatedItem;
 }

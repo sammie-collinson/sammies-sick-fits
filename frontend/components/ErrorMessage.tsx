@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
-import { isApolloError } from '@apollo/client';
+import { ApolloError, isApolloError } from '@apollo/client';
 
 const ErrorStyles = styled.div`
   padding: 2rem;
@@ -18,9 +18,7 @@ const ErrorStyles = styled.div`
 `;
 
 interface DisplayErrorProps {
-  error: {
-    [key: string]: string;
-  };
+  error?: ApolloError;
 }
 
 const DisplayError = ({ error }: DisplayErrorProps) => {
