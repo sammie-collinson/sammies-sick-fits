@@ -12,6 +12,9 @@
   "[javascriptreact]": {
     "editor.formatOnSave": false
   },
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },

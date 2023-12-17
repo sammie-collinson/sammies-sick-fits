@@ -8,6 +8,7 @@ import calcTotalPrice from '../lib/calcTotalPrice';
 import { useUser } from './User';
 import { useCart } from '../lib/cartState';
 import { ProductType } from './Product';
+import RemoveFromCart from './RemoveFromCart';
 
 export interface CartItem {
   product: ProductType;
@@ -78,6 +79,7 @@ function CartItem({ cartItem }: Props) {
           </em>
         </p>
       </div>
+      <RemoveFromCart id={cartItem.id} />
     </CartItemStyles>
   );
 }
