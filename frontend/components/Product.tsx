@@ -6,16 +6,17 @@ import formatMoney from '../lib/formatMoney';
 import DeleteProduct from './DeleteProduct';
 import AddToCart from './AddToCart';
 
+export interface Photo {
+  image: {
+    publicUrlTransformed: string;
+  };
+}
 export interface ProductType {
   id: string;
   name: string;
   price: number;
   description: string;
-  photo: {
-    image: {
-      publicUrlTransformed: string;
-    };
-  };
+  photo: Photo;
 }
 
 interface ProductProps {
